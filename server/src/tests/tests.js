@@ -40,12 +40,12 @@ describe("Tests", () => {
 	});
 
 	//Signup
-	it("User signup should return status 201 and have an id in body", (done) => {
+	it("User signup with secure password should return status 201 and have an id in body", (done) => {
 		chai.request(app)
 			.post("/signup")
 			.send({
-				username: "ccazim",
-				password: "ccazim",
+				username: "ccazim1",
+				password: "ccazim1",
 			})
 			.end((err, res) => {
 				if (err) throw err;
@@ -55,13 +55,29 @@ describe("Tests", () => {
 				done();
 			});
 	});
+
+	//Signup with unsecure password
+	it("User signup with unsecure password containing only letters should return code 400", (done) => {
+		chai.request(app)
+			.post("/signup")
+			.send({
+				username: "ccazim",
+				password: "ccazim",
+			})
+			.end((err, res) => {
+				if (err) throw err;
+				res.should.have.status(400);
+				done();
+			});
+	});
+
 	//login
 	it("Registered user should be able to login and get a token in header", (done) => {
 		chai.request(app)
 			.post("/login")
 			.send({
-				username: "ccazim",
-				password: "ccazim",
+				username: "ccazim1",
+				password: "ccazim1",
 			})
 			.end((err, res) => {
 				if (err) throw err;
@@ -73,14 +89,14 @@ describe("Tests", () => {
 	});
 
 	//me with token
-	it("Route '/me' with token from logged in user 'ccazim' should return the same username", (done) => {
+	it("Route '/me' with token from logged in user 'ccazim1' should return the same username", (done) => {
 		chai.request(app)
 			.get("/me")
 			.set("auth-token", firstUserToken)
 			.end((err, res) => {
 				if (err) throw err;
 				res.should.have.status(200);
-				res.body.should.have.property("username").eq("ccazim");
+				res.body.should.have.property("username").eq("ccazim1");
 				done();
 			});
 	});
@@ -102,15 +118,15 @@ describe("Tests", () => {
 		chai.request(app)
 			.put("/me/update-password")
 			.set("auth-token", firstUserToken)
-			.send({ password: "password" })
+			.send({ password: "pass1word" })
 			.end((err, res) => {
 				if (err) throw err;
 				res.should.have.status(200);
 				chai.request(app)
 					.post("/login")
 					.send({
-						username: "ccazim",
-						password: "password",
+						username: "ccazim1",
+						password: "pass1word",
 					})
 					.end((err, res) => {
 						if (err) throw err;
@@ -126,7 +142,7 @@ describe("Tests", () => {
 	it("Authentication: '/me/update-password' shouldn't be accessible without token", (done) => {
 		chai.request(app)
 			.put("/me/update-password")
-			.send({ password: "password" })
+			.send({ password: "pass1word" })
 			.end((err, res) => {
 				if (err) throw err;
 				res.should.have.status(401);
@@ -264,7 +280,7 @@ describe("Tests", () => {
 						if (err) throw err;
 						res.should.have.header("Content-Type","application/json; charset=utf-8");
 						res.body.should.be.a("array");
-						res.body[0].username.should.be.eq('ccazim');
+						res.body[0].username.should.be.eq('ccazim1');
 						res.body[0].likes.should.be.eq(1)
 						res.body[1].username.should.be.eq('newUser');
 						res.body[1].likes.should.be.eq(0)

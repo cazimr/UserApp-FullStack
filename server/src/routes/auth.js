@@ -2,6 +2,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../tools/environment";
+import verifyPassword from "../tools/verifyPassword";
 
 const router = express.Router();
 
@@ -17,9 +18,12 @@ const auth = (app, db) => {
 			db.query("SELECT id from users where username = ?", [req.body.username], async (err, result, fields) => {
 				if (result.length > 0)
 					return res.status(400).send(`User with username '${req.body.username}' already exists!`);
-
-				//Hash of password + salt using bcrypt 
-				const hashPw = await bcrypt.hash(req.body.password,10);
+				if (!verifyPassword(req.body.password))
+					return res
+						.status(400)
+						.send(`Password must contain a letter, a number and be at least 5 characters long`);
+				//Hash of password + salt using bcrypt
+				const hashPw = await bcrypt.hash(req.body.password, 10);
 				const user = { username: req.body.username, password: hashPw };
 				//Insert to database
 				db.query(
@@ -27,7 +31,7 @@ const auth = (app, db) => {
 					[user.username, user.password],
 					(err, result, fields) => {
 						if (err) throw err;
-						res.status(201).json({id: result.insertId});
+						res.status(201).json({ id: result.insertId });
 					}
 				);
 			});
