@@ -1,9 +1,6 @@
 {
     "private": true,
-    "workspaces": [
-        "app",
-        "server"
-    ],
+    "workspaces": ["packages/*"],
     "devDependencies": {
         "@babel/cli": "^7.12.13",
         "@babel/core": "^7.12.13",
