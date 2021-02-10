@@ -17,7 +17,7 @@
   * Mocha & Chai
   * Multiple edge cases
 
-REST API Routes
+### REST API Routes
 * /signup -- Sign up to the system (username, password)
 * /login -- Logs in an existing user with a password
 * **/me** -- Get the currently logged in user information
