@@ -51,8 +51,7 @@ const auth = (app, db) => {
 			try {
 				if (await bcrypt.compare(req.body.password, results[0].password)) {
 					//JWT Token
-					const token = jwt.sign({ id: results[0].id }, config.access_token_secret);
-
+					const token = jwt.sign({ id: results[0].id }, config.access_token_secret, {expiresIn: '1h'});
 					res.header("auth-token", token).send("Successful login");
 				} else res.status(400).send("Invalid password!");
 			} catch (err) {

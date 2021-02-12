@@ -3,7 +3,7 @@ import config from '../tools/environment';
 
 const verifyToken = (req,res,next)=>{
     const token = req.header('auth-token');
-    if(!token) return res.status(401).send("Access denied!");
+    if(!token) return res.status(401).send("Access denied");
 
     try{
         const verified = jwt.verify(token,config.access_token_secret);
@@ -11,8 +11,9 @@ const verifyToken = (req,res,next)=>{
         next();
     }
     catch(err){
-        console.log("Err",err);
-        res.status(400).send("Invalid token");
+        console.log(JSON.stringify(err));
+        if(err.message==='jwt expired') res.status(400).send("Token expired");
+        else res.status(400).send("Access denied");
     }
 }
 
