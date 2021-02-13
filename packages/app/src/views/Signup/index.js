@@ -1,36 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form } from "antd";
-import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import {signup} from './helpers'
 import { UserOutlined } from "@ant-design/icons";
+
 import {
 	StyledWrapper,
+	TitleWrapper,
+	StyledTitle,
+	StyledAvatar,
 	StyledInput,
 	StyledButton,
 	StyledErrorMessage,
-	TitleWrapper,
-	StyledAvatar,
-	StyledTitle,
 } from "../../components/StyledComponents/authStyle";
-import { login } from "../../redux";
 import Layout from "../../components/Layout";
 
-const LoginPage = (props) => {
+const SignupPage = () => {
 	const history = useHistory();
+	const [errorMessage, setErrorMessage] = useState("");
+
 	return (
 		<Layout>
 			<StyledWrapper>
 				<TitleWrapper>
 					<StyledAvatar icon={<UserOutlined />} />
-					<StyledTitle>Log In</StyledTitle>
+					<StyledTitle>Sign Up</StyledTitle>
 				</TitleWrapper>
-				<Form onFinish={({ username, password }) => props.login(username, password)}>
+
+				<Form onFinish={(data) => signup(data,setErrorMessage,history)}>
 					<Form.Item
 						name="username"
 						rules={[
 							{
 								required: true,
-								message: "Please input your username!",
+								message: "Please input username!",
 							},
 						]}
 					>
@@ -42,37 +45,35 @@ const LoginPage = (props) => {
 						rules={[
 							{
 								required: true,
-								message: "Please input your password!",
+								message: "Please input password!",
 							},
 						]}
 					>
 						<StyledInput.Password placeholder="Password" />
 					</Form.Item>
+
+					<Form.Item
+						name="retypePassword"
+						rules={[
+							{
+								required: true,
+								message: "Please retype password!",
+							},
+						]}
+					>
+						<StyledInput.Password placeholder="Retype password" />
+					</Form.Item>
+
 					<Form.Item>
 						<StyledButton type="primary" htmlType="submit">
-							Login
+							Sign Up
 						</StyledButton>
 					</Form.Item>
 				</Form>
-				{props.errorMessage && <StyledErrorMessage>{props.errorMessage}</StyledErrorMessage>}
-				<a onClick={() => history.push("/signup")}>Don't have an account? Sign Up</a>
+				{errorMessage.length > 0 && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>}
 			</StyledWrapper>
 		</Layout>
 	);
 };
 
-const mapStateToProps = (state) => {
-	return {
-		errorMessage: state.user.error,
-		loggedIn: state.user.loggedIn,
-		token: state.user.token,
-	};
-};
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		login: (username, password) => dispatch(login(username, password)),
-	};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default SignupPage;

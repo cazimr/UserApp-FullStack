@@ -2,7 +2,7 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import app, { db } from "../index";
 
-console.log("Hjade");
+
 //Assertion style
 chai.should();
 

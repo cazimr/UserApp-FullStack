@@ -1,7 +1,5 @@
 import * as userTypes from "./userTypes";
 
-console.log("HAJDE", localStorage.getItem("ME"));
-
 const initialState = {
 	loading: false,
 	loggedIn: localStorage.getItem("me") ? true : false,
@@ -32,13 +30,13 @@ const userReducer = (state = initialState, action) => {
 				error: action.payload,
 			};
 		case userTypes.LOGOUT_USER:
-			return{
+			return {
 				loading: false,
 				loggedIn: false,
 				token: "",
 				error: "",
 				data: {},
-			}
+			};
 
 		case userTypes.GET_USER_INFO_REQUEST:
 			return {
@@ -51,7 +49,7 @@ const userReducer = (state = initialState, action) => {
 				loading: false,
 				error: "",
 				loggedIn: true,
-				data: action.payload
+				data: action.payload,
 			};
 		case userTypes.GET_USER_INFO_FAILURE:
 			return {
@@ -60,6 +58,25 @@ const userReducer = (state = initialState, action) => {
 				token: "",
 				error: "",
 				data: {},
+			};
+		case userTypes.USER_PASSWORD_RESET_REQUEST:
+			return {
+				...state,
+				loading: true,
+			};
+		case userTypes.USER_PASSWORD_RESET_SUCCESS:
+			return {
+				loading: false,
+				loggedIn: false,
+				token: "",
+				error: "",
+				data: {},
+			};
+		case userTypes.USER_PASSWORD_RESET_FAILURE:
+			return {
+				...state,
+				loading: false,
+				error: action.payload,
 			};
 
 		default:

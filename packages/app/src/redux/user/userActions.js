@@ -21,12 +21,33 @@ export const loginUserFailure = (err) => {
 	};
 };
 
-export const logoutUser=()=>{
-	if(localStorage.getItem("me")) localStorage.removeItem("me");
-	return{
-		type: userTypes.LOGOUT_USER
-	}
-}
+export const logoutUser = () => {
+	if (localStorage.getItem("me")) localStorage.removeItem("me");
+	alert("User logged out");
+	return {
+		type: userTypes.LOGOUT_USER,
+	};
+};
+
+export const resetUserPassRequest = () => {
+	return {
+		type: userTypes.USER_PASSWORD_RESET_REQUEST,
+	};
+};
+
+export const resetUserPassSuccess = () => {
+	alert("Password reset successful. Please login");
+	return {
+		type: userTypes.USER_PASSWORD_RESET_SUCCESS,
+	};
+};
+
+export const resetUserPassFailure = (err) => {
+	return {
+		type: userTypes.USER_PASSWORD_RESET_FAILURE,
+		payload: err,
+	};
+};
 
 export const getUserInfoRequest = () => {
 	return {
@@ -37,20 +58,20 @@ export const getUserInfoRequest = () => {
 export const getUserInfoSuccess = (data) => {
 	return {
 		type: userTypes.GET_USER_INFO_SUCCESS,
-		payload: data
+		payload: data,
 	};
 };
 
 export const getUserInfoFailure = (err) => {
 	//Invalid or expired token
-	if(err==='Acces Denied'){
-		if(localStorage.getItem("me")) localStorage.removeItem("me");
+	if (err === "Acces Denied") {
+		if (localStorage.getItem("me")) localStorage.removeItem("me");
 		alert("Access Denied. Please login again");
-	}
+	} else alert(err + ". Please try again");
 
 	return {
 		type: userTypes.GET_USER_INFO_FAILURE,
-		payload: err
+		payload: err,
 	};
 };
 
@@ -63,8 +84,8 @@ export const login = (username, password) => {
 				dispatch(loginUserSuccess(res.headers["auth-token"]));
 			})
 			.catch((err) => {
-				console.log("ERR", err.response.data);
-				dispatch(loginUserFailure(err.response.data));
+				if (err.response.data.includes("<!DOCTYPE html>")) dispatch(loginUserFailure(err.message));
+				else dispatch(loginUserFailure(err.response.data));
 			});
 	};
 };
@@ -73,12 +94,29 @@ export const getUserInfo = (token) => {
 	return (dispatch) => {
 		dispatch(getUserInfoRequest());
 		axios
-			.get("http://localhost:5000/me",{ headers: { "auth-token": token } })
-			.then((res) => {dispatch(getUserInfoSuccess(res.data))})
+			.get("http://localhost:5000/me", { headers: { "auth-token": token } })
+			.then((res) => {
+				dispatch(getUserInfoSuccess(res.data));
+			})
 			.catch((err) => {
-				let errMessage=err.message;
-				if(err.res && err.res.data) errMessage=err.res.data;
-				dispatch(getUserInfoFailure(errMessage))
+				if (err.response.data.includes("<!DOCTYPE html>")) dispatch(getUserInfoFailure(err.message));
+				else dispatch(getUserInfoFailure(err.response.data));
+			});
+	};
+};
+
+export const resetUserPassword = (password, token) => {
+	return (dispatch) => {
+		dispatch(resetUserPassRequest());
+		axios
+			.put("http://localhost:5000/me/update-password", { password }, { headers: { "auth-token": token } })
+			.then((res) => {
+				console.log("RESPONSE",res);
+				dispatch(resetUserPassSuccess());
+			})
+			.catch((err) => {
+				if (err.response.data.includes("<!DOCTYPE html>")) dispatch(resetUserPassFailure(err.message));
+				else dispatch(resetUserPassFailure(err.response.data));
 			});
 	};
 };

@@ -1,32 +1,41 @@
 import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
-import PrivateRoute from "./PrivateRoute";
 import LoginPage from "../views/Login";
-import MyProfile from "../views/MyProfile";
+import Home from "../views/Home";
+import SignupPage from "../views/Signup";
+import PasswordResetPage from "../views/PasswordReset";
 
 const Routes = () => {
 	const loggedIn = useSelector((state) => state.user.loggedIn);
 	const token = useSelector((state) => state.user.token);
 	useEffect(() => {
-		console.log("Usao");
-
-		if (loggedIn && !localStorage.getItem("me",token)){
-			console.log("USAO");
+		if (loggedIn && !localStorage.getItem("me", token)) {
 			localStorage.setItem("me", token);
-		} 
+		}
 	}, [loggedIn]);
+
 	return (
 		<Switch>
 			<Route exact path="/">
-				{loggedIn ? <Redirect to="/me" /> : <Redirect to="/login" />}
+				<Redirect to="/home" />
 			</Route>
 			<Route
 				exact
 				path="/login"
-				render={(props) => (loggedIn ? <Redirect to="/me" /> : <LoginPage {...props} />)}
+				render={(props) => (loggedIn ? <Redirect to="/home" /> : <LoginPage {...props} />)}
 			/>
-			<PrivateRoute exact path="/me" component={MyProfile} />
+			<Route exact path="/home" component={Home} />
+			<Route
+				exact
+				path="/signup"
+				render={(props) => (loggedIn ? <Redirect to="/home" /> : <SignupPage {...props} />)}
+			/>
+						<Route
+				exact
+				path="/resetPassword"
+				render={(props) => (loggedIn ?  <PasswordResetPage {...props} />: <Redirect to="/login" />)}
+			/>
 		</Switch>
 	);
 };
