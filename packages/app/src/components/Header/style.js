@@ -25,6 +25,9 @@ export const FlexRow = styled.div`
 export const StyledTitle = styled.h2`
 	color: white;
 	margin-top: 8px;
+	&:hover{
+		cursor: pointer;
+	}
 `;
 
 export const StyledLink = styled.a`

@@ -6,6 +6,7 @@ export const MainContainer = styled.div`
     display: flex;
     flex-direction: row;
     padding: 2em 1em 2em 1em;
+    margin-top: 15%;
 `;
 
 export const FlexColumn = styled.div`

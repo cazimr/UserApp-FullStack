@@ -10,7 +10,7 @@ const Routes = () => {
 	const loggedIn = useSelector((state) => state.user.loggedIn);
 	const token = useSelector((state) => state.user.token);
 	useEffect(() => {
-		if (loggedIn && !localStorage.getItem("me", token)) {
+		if (loggedIn && !localStorage.getItem("me")) {
 			localStorage.setItem("me", token);
 		}
 	}, [loggedIn]);

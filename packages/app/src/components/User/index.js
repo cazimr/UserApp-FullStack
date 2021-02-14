@@ -10,7 +10,7 @@ const User = ({username,likes}) => {
             <style.FlexColumn>
                 {username && <style.StyledTitle>{username}</style.StyledTitle>}
                 {likes && <style.StyledSubTitle>Likes: {likes}</style.StyledSubTitle>}
-                <a onClick={()=> {console.log("Debil"); history.push('/resetPassword')}}>Reset password</a>
+                <a onClick={()=> {history.push('/resetPassword')}}>Reset password</a>
             </style.FlexColumn>
             
         </style.MainContainer>

@@ -17,7 +17,8 @@ export const signup = ({username,password,retypePassword},setErrorMessage,histor
             }
         })
         .catch((err) => {
-            if (err.response.data.includes('<!DOCTYPE html>')) setErrorMessage(err.message);
+            if(!err.response || !err.response.data) setErrorMessage(err.message);
+            else if (err.response.data.includes('<!DOCTYPE html>')) setErrorMessage(err.message);
             else {
                 setErrorMessage(err.response.data);
             }

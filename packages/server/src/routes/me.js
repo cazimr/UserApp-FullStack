@@ -11,13 +11,22 @@ const me = (app, db) => {
 	//return id,iat(from token) and username
 	router.get("/me", verifyToken, (req, res) => {
 		db.query(
-			`SELECT u.id, u.username, IFNULL(ul.likes, 0) likes FROM
-		     users u LEFT JOIN (SELECT user_liked, IFNULL(COUNT(user_liked), 0) 'likes'FROM
-			user_likes GROUP BY user_liked) ul ON u.id = ul.user_liked WHERE id = ?`,
+			`SELECT u.username, IFNULL(ul.likes, 0) likes FROM
+			users u LEFT JOIN (SELECT user_liked, IFNULL(COUNT(user_liked), 0) 'likes'FROM
+		   user_likes GROUP BY user_liked) ul ON u.id = ul.user_liked WHERE id = ?`,
 			[req.loggedUser.id],
 			(err, results) => {
 				if (err) throw err;
-				res.json(results[0]);
+				db.query(
+					`SELECT user_liked FROM user_likes WHERE user_liking=?`,
+					[req.loggedUser.id],
+					(err, results2) => {
+						if (err) throw err;
+						let likedUsers = [];
+						results2.forEach((result) => likedUsers.push(result["user_liked"]));
+						res.json({ id: req.loggedUser.id, username: results[0].username, likes: results[0].likes, liked_users: likedUsers });
+					}
+				);
 			}
 		);
 	});

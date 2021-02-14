@@ -9,3 +9,4 @@ export const store = createStore(rootReducer, composeWithDevTools(applyMiddlewar
 
 //export all of the actions
 export * from './user/userActions'
+export * from './users/usersActions';

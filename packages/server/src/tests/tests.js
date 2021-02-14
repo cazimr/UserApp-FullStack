@@ -33,7 +33,7 @@ describe("Tests", () => {
 					if (err.code.toString() === "ER_NO_SUCH_TABLE") return done();
 					else throw err;
 				}
-				console.log("Moze");
+		
 				done();
 			});
 		});

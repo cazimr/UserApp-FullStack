@@ -79,6 +79,30 @@ const userReducer = (state = initialState, action) => {
 				error: action.payload,
 			};
 
+		case userTypes.USER_UNLIKE_REQUEST:
+		case userTypes.USER_LIKE_REQUEST:
+			return {
+				...state,
+				loading: true,
+			};
+
+		case userTypes.USER_UNLIKE_SUCCESS:
+		case userTypes.USER_LIKE_SUCCESS:
+			return {
+				...state,
+				loading: false,
+			};
+
+		case userTypes.USER_UNLIKE_FAILURE:
+		case userTypes.USER_LIKE_FAILURE:
+			return {
+				...state,
+
+				loading: false,
+				error: action.payload,
+			};
+		case userTypes.USER_LIKE_FAILURE:
+
 		default:
 			return state;
 	}

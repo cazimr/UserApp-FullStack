@@ -22,7 +22,7 @@ function Header() {
 		<style.StyledHeader>
 			<style.FlexRow>
 				<style.StyledAvatar icon={<UserOutlined />} />
-				<style.StyledTitle>UserApp</style.StyledTitle>
+				<style.StyledTitle onClick={() => history.push("/home")}>UserHome</style.StyledTitle>
 			</style.FlexRow>
 
 			{location.pathname !== "/login" && (
