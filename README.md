@@ -28,3 +28,13 @@
 * /most-liked -- List users in a most liked to least liked
 
 Each user can like another only once, and they can unlike each other. The **bolded endpoints** are authenticated calls
+
+## Frontend
+### Using
+* React
+* React-Redux (Thunk middleware, Devtools extension) - state management
+* Styled-System, Styled-Components 
+* Antd - design templates
+* Unit Tests
+  * Testing Library w Jest
+
