@@ -181,8 +181,10 @@ export const getUserInfo = (token) => {
 	};
 };
 
-export const resetUserPassword = (password, token) => {
+export const resetUserPassword = (password, retypePassword, token) => {
 	return (dispatch) => {
+		if (password !== retypePassword) return dispatch(resetUserPassFailure("Passwords don't match"));
+
 		dispatch(resetUserPassRequest());
 		axios
 			.put("http://localhost:5000/me/update-password", { password }, { headers: { "auth-token": token } })

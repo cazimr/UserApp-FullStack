@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { resetUserPassword} from '../../redux';
+import { resetUserPassword } from "../../redux";
 import { UserOutlined } from "@ant-design/icons";
 
 import {
@@ -29,9 +29,9 @@ const PasswordResetPage = () => {
 
 				<Form
 					onFinish={({ password, retypePassword }) => {
-						if (password !== retypePassword) error = "You haven't retyped your password correctly";
-                        dispatch(resetUserPassword(password,token));
-					}} style={{width: '20em'}}
+						dispatch(resetUserPassword(password, retypePassword, token));
+					}}
+					style={{ width: "20em" }}
 				>
 					<Form.Item
 						name="password"
@@ -58,12 +58,12 @@ const PasswordResetPage = () => {
 					</Form.Item>
 
 					<Form.Item>
-						<StyledButton type="primary" htmlType="submit" style={{width: '10em', marginLeft: '25%'}}>
+						<StyledButton type="primary" htmlType="submit" style={{ width: "10em", marginLeft: "25%" }}>
 							Reset Password
 						</StyledButton>
 					</Form.Item>
 				</Form>
-				{ (error.length > 0) && <StyledErrorMessage>{error}</StyledErrorMessage>}
+				{error.length > 0 && <StyledErrorMessage>{error}</StyledErrorMessage>}
 			</StyledWrapper>
 		</Layout>
 	);
