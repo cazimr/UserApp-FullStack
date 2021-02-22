@@ -1,4 +1,8 @@
 # FullStack Monorepo Dummy Project
+
+*This project serves only as an example of:  implementing below mentioned technologies, using monorepo, "clean-code" structure etc.
+**.env file is pushed to repo only for easy and quick testing purposes, and should never be involved in production**
+
 ## Backend
 
 ### Using
