@@ -1,4 +1,13 @@
 # FullStack Monorepo Dummy Project
+
+*Simple project consisting of: Register, Login, Password Reset, Viewing all users currently in system and "Like/Unlike user" option.*
+
+*This project serves as an example of implementing multiple full-stack technologies mentioned below, using monorepo with yarn workspaces, "clean-code" structure with both React app and Node service and implementing Authentication.*
+
+**.env file is pushed to repo only for easy and quick testing purposes, and should never be involved in production**
+
+
+
 ## Backend
 
 ### Using
