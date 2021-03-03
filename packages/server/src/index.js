@@ -2,10 +2,7 @@ import express from "express";
 import cors from 'cors';
 import helmet from 'helmet';
 import logger from './tools/logger';
-import auth from './routes/auth';
-import me from './routes/me';
-import user from './routes/user';
-import mostLiked from './routes/mostLiked';
+import {auth,me,user,mostLiked} from './routes';
 import dbInit from './db/dbInit';
 import config from './tools/environment';
 
