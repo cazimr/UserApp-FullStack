@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form } from "antd";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -17,6 +17,7 @@ import Layout from "../../components/Layout";
 
 const LoginPage = (props) => {
 	const history = useHistory();
+	const [clicked, setClicked] = useState(false);
 	return (
 		<Layout>
 			<StyledWrapper>
@@ -24,7 +25,12 @@ const LoginPage = (props) => {
 					<StyledAvatar icon={<UserOutlined />} />
 					<StyledTitle>Log In</StyledTitle>
 				</TitleWrapper>
-				<Form onFinish={({ username, password }) => props.login(username, password)}>
+				<Form
+					onFinish={({ username, password }) => {
+						props.login(username, password);
+						setClicked(true);
+					}}
+				>
 					<Form.Item
 						name="username"
 						rules={[
@@ -54,8 +60,10 @@ const LoginPage = (props) => {
 						</StyledButton>
 					</Form.Item>
 				</Form>
-				{props.errorMessage && <StyledErrorMessage>{props.errorMessage}</StyledErrorMessage>}
-				<a onClick={() => history.push("/signup")}>Don't have an account? Sign Up</a>
+				{clicked && !props.loading && <StyledErrorMessage>{props.errorMessage}</StyledErrorMessage>}
+				<a href={() => false} onClick={() => history.push("/signup")}>
+					Don't have an account? Sign Up
+				</a>
 			</StyledWrapper>
 		</Layout>
 	);
@@ -66,6 +74,7 @@ const mapStateToProps = (state) => {
 		errorMessage: state.user.error,
 		loggedIn: state.user.loggedIn,
 		token: state.user.token,
+		loading: state.user.loading,
 	};
 };
 

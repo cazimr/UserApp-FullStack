@@ -62,6 +62,19 @@ export const getUserInfoSuccess = (data) => {
 	};
 };
 
+export const getUserInfoFailure = (err) => {
+	//Invalid or expired token, or maybe something else, but for safety reasons we will log out user
+	if (localStorage.getItem("me")) localStorage.removeItem("me");
+	if (err === "Access Denied") {
+		alert("Access Denied. Please login again");
+	} else alert(err + ". Please try again");
+
+	return {
+		type: userTypes.GET_USER_INFO_FAILURE,
+		payload: err,
+	};
+};
+
 export const userLikeRequest = () => {
 	return {
 		type: userTypes.USER_LIKE_REQUEST,
@@ -136,18 +149,7 @@ export const userUnlike = (id, token) => {
 	};
 };
 
-export const getUserInfoFailure = (err) => {
-	//Invalid or expired token, or maybe something else, but for safety reasons we will log out user
-	if (localStorage.getItem("me")) localStorage.removeItem("me");
-	if (err === "Acces Denied") {
-		alert("Access Denied. Please login again");
-	} else alert(err + ". Please try again");
 
-	return {
-		type: userTypes.GET_USER_INFO_FAILURE,
-		payload: err,
-	};
-};
 
 export const login = (username, password) => {
 	return (dispatch) => {
